@@ -37,7 +37,7 @@ class happyValentines {
     
     do{
     
-      System.out.print(startResponses[nosayer.nextInt(startResponses.length)]);
+    System.out.print(startResponses[nosayer.nextInt(startResponses.length)]);
     String decision = reader.nextLine();
     
     String[] rightDecision = {"yes","yeah","YES","Yes","Yeah","Absolutely","okay","ok",","Ofcourse!","YEAH","OFCOURSE","yes you can","Yes you can","ofcourse"};
