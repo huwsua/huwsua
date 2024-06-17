@@ -9,7 +9,9 @@ public class myAwesomeProgram implements ActionListener{
    JLabel text = new JLabel();
    int maxFrames = 100;
    JFrame[] frames = new JFrame[maxFrames];  // Array to hold all open frames
-   int frameCount = 0;
+   int frameCount = 1;
+   int textCount = 0;
+   boolean sureReply = false;
    Random ranLoc = new Random();
   
   public static void main(String[] args) {
@@ -21,7 +23,7 @@ public class myAwesomeProgram implements ActionListener{
     
     JFrame frame = new JFrame();
     frame.setResizable(false);
-    text.setText("ARE YOU A DONKEY???????");
+    text.setText("ARE YOU THE BEST TEACHER?");
     
     text.setFont(new Font("Arial", Font.BOLD, 25));
     text.setBounds(190,50,500,500);
@@ -33,11 +35,10 @@ public class myAwesomeProgram implements ActionListener{
     yesButton.addActionListener(this);
     noButton.addActionListener(this);
     
-    noButton.addMouseListener(new MouseAdapter() {
+    noButton.addMouseListener(new MouseAdapter() {    //Randomizes the position of the button everytime the mouse enters the area of the button
        @Override
        public void mouseEntered(MouseEvent e) {
-          
-         noButton.setBounds(ranLoc.nextInt(700), ranLoc.nextInt(500),100,50);
+          noButton.setBounds(ranLoc.nextInt(700), ranLoc.nextInt(500),100,50);
        }
     });
     
@@ -49,74 +50,103 @@ public class myAwesomeProgram implements ActionListener{
     frame.setLayout(null);
     frame.setSize(800,600);
     
-    frame.setLocation( ranLoc.nextInt(800), ranLoc.nextInt(600) ); // Randomizes the frame location
+    frame.setLocation( ranLoc.nextInt(800), ranLoc.nextInt(600) ); // Randomizes the frame location when closed
     
-    frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);  //Removes closing functionality
+    frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);  // Prevents the close button from working
     
     
-    if (frameCount <= maxFrames){   //Checks if the number of open windows has reached the limit
+    if (frameCount <= maxFrames){   // Checks if the number of open windows has reached the limit
       frames[frameCount++] = frame;
-      frame.addWindowListener(new WindowAdapter() {  //Calls the method go()
-         @Override
+      frame.addWindowListener(new WindowAdapter() {  // Calls the method go() if the user attempts to close therefore
+         @Override                                    // Opening another window
          public void windowClosing(WindowEvent e) {
            go();
-      }
+         }
       });
-    }
-    if(frameCount==2) {
-    text.setText("ARE YOU SURE ABOUT THAT");
-    }
-    
-    else {
-      System.out.println("Really?");   //Stops opening new windows to prevent computer from exploding
+    } else {
+      text.setText("REALLY?");           //Stops opening new windows to prevent computer from blowing up
     }
     
+    if (sureReply) {
+      textCount = 3;        // Makes sure it goes to the "OK then" text when the user says they are unsure
+    } else {
+      textCount = (frameCount%3) + 1;    
+    }
+    
+    if (textCount == 1) {
+      text.setText("ARE YOU SURE YOU WANT TO DO THAT?");
+      text.setBounds(135,50,600,500);
+      yesButton.setText("No");             //Swapping the functions of the buttons
+      yesButton.setBounds(420,350,100,50);
+      noButton.setText("Yes");
+      noButton.setBounds(220,350,100,50);
+       
+    } else if (textCount == 2) {
+      text.setText("   ATTEMPTING TO EXIT IS FUTILE   ");
+      yesButton.setVisible(false);
+      noButton.setVisible(false);
+    
+    } else if (textCount == 3 && sureReply) {
+      text.setText("OK then, ARE YOU THE BEST?");
+      text.setBounds(190,50,600,500);
+      sureReply = false;
+    }
+    
+      
     frame.setVisible(true);
   }
   
   public void actionPerformed(ActionEvent event) {
-    if(event.getSource()==yesButton) {
-      for(int i = 0; i < frameCount; i++) { //Disposes all of the frames before closing
-        if(frames[i] != null) {
+    if ( event.getSource() == yesButton && textCount!=1 ) {
+      for (int i = 0; i < frameCount; i++) {   // Disposes all of the frames before closing when yes is clicked
+        if (frames[i] != null) {                // in the "Are you the best teacher" prompt
           frames[i].dispose();
-       }
-    } 
-    ending();
-    
-    if(event.getSource()==noButton) {
-      System.out.print("How");
+        }
+      }
+      ending();                                      // Calls the ending screen after disposing 
+    } else if ( event.getSource() == yesButton ) {  
+      sureReply = true;                              // If textCount is 1 which is the "Are you sure" prompt 
+      go();                                          // and the user presses No (they are not sure) 
+    }                                                // it sets sureReply to true and instead opens another window
+                                                     // prompting the question again not reaching the ending yet
+    if ( event.getSource() == noButton ) {
+      text.setText("            How            ");
     }
+
   }
-}
+
   public void ending() {
       JFrame eframe = new JFrame();
       eframe.setResizable(false);
       JTextArea textarea = new JTextArea(
                    "                             * * * * * * * * * * * * *                                           \n" + 
-                   "                        * * * * * * * * * * * * * * * * * *                                     \n" +      
+                   "                        * * * * * * * * * * * * * * * * * *                                      \n" +      
                    "                     * * * * * * * *   * * * * * * * * * * * * *                                 \n" +                                 
                    "                   * * * *   * * * * * * * * * * * * * * * *  * *                                \n" + 
-                   "                 * * * * *   * * * * *   * * *       * * * * * *   *                           \n" +   
-                   "               * * *   * * * * *   * * *           *   * * * * * * *                           \n" +    
-                   "               * * * * * * * * * * * *               * * * * * * * *                           \n" +      
+                   "                 * * * * *   * * * * *   * * *       * * * * * *   *                             \n" +   
+                   "               * * *   * * * * *   * * *               * * * * * * *                             \n" +    
+                   "               * * * * * * * * * * * *                   * * * * * *                             \n" +      
                    "             * * * *   * * *                               * * * *                               \n" +      
-                   "                 * * * * *     * * *           * * * * *       * * *                           \n" +      
-                   "               * *       = = = = = = = = = = = = = = = =       *  *         *                 \n" +    
-                   "               * *     =             = =  = =          = =     *   *      *   *           \n" +    
-                   "               *        =      2       =   =     2       =      * *      *    *         \n" +
-                   "               *   *       = = = = =           = = =  =        *  *      *    *          \n" +       
-                   "               * * * *                 * * *                  * *        *      *               \n" +     
-                   "                   * *             * * * * * * *          * * * *       *      *               \n" +     
+                   "                 * * * * *     * * *           * * * * *       * * *                             \n" +      
+                   "               * *       = = = = = = = = = = = = = = = =       *  *         *                    \n" +    
+                   "               * *     =             = =  = =          = =     *   *      *   *                  \n" +    
+                   "               *        =      2       =   =     2       =      * *      *    *                  \n" +
+                   "               *   *       = = = = =           = = =  =        *  *      *    *                  \n" +       
+                   "               * * * *                 * * *                  * *        *      *                \n" +     
+                   "                   * *             * * * * * * *          * * * *       *      *                 \n" +     
                    "                     *                  * * *             * * * *       *       * * * *          \n" +     
-                   "                       *            *           *         * * *         *                 * *     \n" +     
-                   "                         *           ** * * **          *  *          *                   *    \n" +      
+                   "                       *            *           *         * * *         *                 * *    \n" +     
+                   "                         *           ** * * **          *  *          *                   *      \n" +      
                    "                           * *                         * * *           *                   *     \n" +     
                    "                               * * *   * *       * * * *               *                 * *     \n" +     
                    "                                  * * * * * * * *                     * *       * * * * *        \n" +    
                    "                                                                         * * * * *               \n" +
-                   "                             Correct !!!"                      
+                   "                             Correct !!!"                                                        //Portrait de la masterpiece
                                         );
-      if(frameCount>1) textarea.append(" Can exit now :)");
+      if ( frameCount > 2 ) {
+         textarea.append(" You can exit now ");
+      }
+     
       textarea.setEditable(false);
       textarea.setBounds(10,10,800,500);
       textarea.setFont(new Font("Monospaced", Font.PLAIN,14)); 
@@ -130,6 +160,8 @@ public class myAwesomeProgram implements ActionListener{
       eframe.setVisible(true);  
   }
 }
+    
+    
     
     
     
