@@ -86,7 +86,7 @@ public class myAwesomeProgram implements ActionListener{
         noButton.setBounds(220,350,100,50);
        
       } else if (textCount == 2) {
-        text.setText("   ATTEMPTING TO EXIT IS FUTILE   ");
+        text.setText("ATTEMPTING TO EXIT IS FUTILE");
         yesButton.setVisible(false);
         noButton.setVisible(false);
      
