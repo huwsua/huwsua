@@ -25,7 +25,7 @@ public class myAwesomeProgram implements ActionListener{
     
       JFrame frame = new JFrame();
       frame.setResizable(false);
-      text.setText("ARE YOU THE BEST TEACHER?");
+      text.setText("ARE YOU THE INSERT WHATEVER");
     
       text.setFont(new Font("Arial", Font.BOLD, 25));
       text.setBounds(190,50,500,500);
